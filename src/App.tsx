@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { motion, useMotionValue } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
 const Wrapper = styled.div`
   display: flex;
   max-width: 680px;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   margin: 0 auto;
   justify-content: center;
@@ -35,14 +35,16 @@ const BiggerBox = styled.div`
 const boxVariants = {};
 
 function App() {
-  const x = useMotionValue(0);
+  const x = useMotionValue<number>(0);
+  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]); // motionValue는 x값, x값에 따라서 scale이 달라질 것이므로.
   useEffect(() => {
-    x.on('change', () => console.log(x.get()));
+    // x.on('change', () => console.log(x.get()));
+    scale.on('change', () => console.log(scale.get()));
   }, [x]);
   console.log(x);
   return (
     <Wrapper>
-      <Box style={{ x: x }} drag="x" dragSnapToOrigin />
+      <Box style={{ x: x, scale }} drag="x" dragSnapToOrigin />
     </Wrapper>
   );
 }
