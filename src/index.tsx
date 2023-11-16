@@ -49,7 +49,7 @@ table {
 }
 body {
   font-family: 'Lato', sans-serif;
-  background:linear-gradient(135deg,#e09,#d0e);
+  /* background:linear-gradient(135deg,#e09,#d0e); */
   color: ${(props) => props.theme.textColor};
   line-height: 1;
 }

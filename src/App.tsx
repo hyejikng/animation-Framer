@@ -1,15 +1,20 @@
 import styled from 'styled-components';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useViewportScroll,
+} from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   display: flex;
-  max-width: 680px;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
+  /* background: linear-gradient(45deg, rgb(254, 211, 48), rgb(165, 94, 234)); */
 `;
 
 const Box = styled(motion.div)`
@@ -21,30 +26,28 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-const BiggerBox = styled.div`
-  width: 600px;
-  height: 600px;
-  background-color: rgba(225, 225, 225, 0.2);
-  border-radius: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-`;
-
 const boxVariants = {};
 
 function App() {
   const x = useMotionValue<number>(0);
-  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]); // motionValue는 x값, x값에 따라서 scale이 달라질 것이므로.
-  useEffect(() => {
-    // x.on('change', () => console.log(x.get()));
-    scale.on('change', () => console.log(scale.get()));
-  }, [x]);
-  console.log(x);
+  const rotateZ = useTransform(x, [-800, 800], [360, -360]);
+  const gradient = useTransform(
+    x,
+    [-800, 800],
+    [
+      'linear-gradient(45deg, rgb(254, 211, 48), rgb(52, 58, 226))',
+      'linear-gradient(45deg, rgb(4, 145, 77), rgb(121, 114, 127))',
+    ]
+  );
+
+  // useEffect(() => {
+  //   // x.on('change', () => console.log(x.get()));
+  //   rotateZ.on('change', () => console.log(rotateZ.get()));
+  // }, [x]);
+  // console.log(x);
   return (
-    <Wrapper>
-      <Box style={{ x: x, scale }} drag="x" dragSnapToOrigin />
+    <Wrapper style={{ background: gradient }}>
+      <Box style={{ x: x, rotateZ }} drag="x" dragSnapToOrigin />
     </Wrapper>
   );
 }
