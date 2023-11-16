@@ -24,8 +24,8 @@ const Box = styled(motion.div)`
 const boxVariants = {};
 
 function App() {
-  const x = useMotionValue<number>(0);
-  const rotateZ = useTransform(x, [-800, 800], [360, -360]);
+  const xMotion = useMotionValue<number>(0);
+  const rotateZ = useTransform(xMotion, [-800, 800], [360, -360]);
 
   const gradient = useTransform(
     x,
@@ -40,14 +40,14 @@ function App() {
   // useEffect(() => {
   //   // x.on('change', () => console.log(x.get()));
   //   rotateZ.on('change', () => console.log(rotateZ.get()));
-  // }, [x]);
-  // console.log(x);
+  // }, [xMotion]);
+
   // useEffect(() => {
   //   scrollYProgress.on('change', () => console.log(scrollYProgress.get()));
   // }, [scrollYProgress]);
   return (
     <Wrapper style={{ background: gradient }}>
-      <Box style={{ x, rotateZ, scale }} drag="x" dragSnapToOrigin />
+      <Box style={{ x: xMotion, rotateZ, scale }} drag="x" dragSnapToOrigin />
     </Wrapper>
   );
 }
