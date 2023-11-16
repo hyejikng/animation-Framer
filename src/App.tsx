@@ -34,7 +34,7 @@ const svgV = {
   end: {
     fill: 'rgba(235, 59, 90, 1)',
     pathLength: 1,
-    transition: { duration: 3 },
+    // transition: { duration: 3 },
   },
 };
 /* function App() {
@@ -74,6 +74,10 @@ function App() {
           variants={svgV}
           initial={'start'}
           animate={'end'}
+          transition={{
+            default: { duration: 5 },
+            fill: { duration: 2, delay: 5 },
+          }}
           d="M224
           373.12c-25.24-31.67-40.08-59.43-45-83.18-22.55-88 112.61-88 90.06
           0-5.45 24.25-20.29 52-45 83.18zm138.15 73.23c-42.06
