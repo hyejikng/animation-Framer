@@ -15,77 +15,69 @@ const Wrapper = styled(motion.div)`
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-
   background: linear-gradient(45deg, rgb(254, 211, 48), rgb(165, 94, 234));
 `;
 
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 50vw;
+  gap: 10px;
+  div:first-child,
+  div:last-child {
+    grid-column: span 2;
+  }
+`;
+
 const Box = styled(motion.div)`
-  width: 300px;
-  height: 150px;
+  height: 200px;
   background-color: white;
   border-radius: 40px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+  top: 100px;
+`;
+
+const Overlay = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
-  color: black;
-  position: absolute;
-  top: 100px;
 `;
-const boxVariant = {
-  entry: (isBack: boolean) => ({
-    x: isBack ? -500 : 500,
-    opacity: 0,
-    scale: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 1,
-    },
-  },
-  exit: (isBack: boolean) => ({
-    x: isBack ? 500 : -500,
-    opacity: 0,
-    scale: 0,
-    transition: {
-      duration: 1,
-    },
-  }),
+
+const OverlayVar = {
+  initial: { backgroundColor: 'rgba(0, 0, 0, 0)' },
+  animate: { backgroundColor: 'rgba(0, 0, 0, 1)' },
+  exit: { backgroundColor: 'rgba(0, 0, 0, 0)' },
 };
+
 function App() {
-  const [visible, setVisible] = useState(1);
-  const [back, setBack] = useState(false);
-
-  const nextPlease = () => {
-    setBack(false);
-    setVisible((prev) => (prev === 10 ? 1 : prev + 1));
+  const [clicked, setClicked] = useState(false);
+  const toggle = () => {
+    setClicked((prev) => !prev);
   };
-  const prevPlease = () => {
-    setBack(true);
-    setVisible((prev) => (prev === 1 ? 10 : prev - 1));
-  };
-
   return (
-    <Wrapper>
-      <AnimatePresence custom={back}>
-        <Box
-          custom={back}
-          variants={boxVariant}
-          initial="entry"
-          animate="center"
-          exit="exit"
-          key={visible}
-        >
-          {visible}
-        </Box>
-        {/* element의 key를 바꿔주는 것만으로도 ReactJS는 Box element가 사라졌다고 생각하고 exit를 실행시킨다.   */}
+    <Wrapper onClick={toggle}>
+      <Grid>
+        <Box layoutId="hello" />
+        <Box />
+        <Box />
+        <Box />
+      </Grid>
+      <AnimatePresence>
+        {clicked ? (
+          <Overlay
+            variants={OverlayVar}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <Box layoutId="hello" style={{ width: 400, height: 200 }} />
+            {/* layoutId를 같게 해줌으로써 서로 다른 components를 연결해줄 수 있다. */}
+          </Overlay>
+        ) : null}
       </AnimatePresence>
-      <button onClick={nextPlease}>next</button>
-      <button onClick={prevPlease}>prev</button>
     </Wrapper>
   );
 }
